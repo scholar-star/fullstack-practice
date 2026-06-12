@@ -27,30 +27,30 @@ export default function SearchPage() {
   //   TODO: 아래 useEffect 블록을 완성해보세요.완성 후 Route Handler 방식(아래)은 주석 처리하세요.
   // ===========================================================================
   
-    useEffect(() => {
-      setLoading(true);
-      setError(null);
+    // useEffect(() => {
+    //   setLoading(true);
+    //   setError(null);
   
-      // TODO: process.env.NEXT_PUBLIC_FASTAPI_URL 을 사용해 /posts 를 fetch 하세요.
-      //       성공 시 setResults, 실패 시 setError, 완료 시 setLoading(false) 처리.
-      fetch(`${process.env.NEXT_PUBLIC_FASTAPI_URL}/posts`)
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`에러 발생 : ${res.status}`);
-        }
-        return res.json()
-      })
-      .then((data) => {
-        setResults(data);
-      })
-      .catch((err) => {
-        setError(err)
-      })
-      .finally(() => {
-        setLoading(false)
-      })
+    //   // TODO: process.env.NEXT_PUBLIC_FASTAPI_URL 을 사용해 /posts 를 fetch 하세요.
+    //   //       성공 시 setResults, 실패 시 setError, 완료 시 setLoading(false) 처리.
+    //   fetch(`${process.env.NEXT_PUBLIC_FASTAPI_URL}/posts`)
+    //   .then((res) => {
+    //     if (!res.ok) {
+    //       throw new Error(`에러 발생 : ${res.status}`);
+    //     }
+    //     return res.json()
+    //   })
+    //   .then((data) => {
+    //     setResults(data);
+    //   })
+    //   .catch((err) => {
+    //     setError(err)
+    //   })
+    //   .finally(() => {
+    //     setLoading(false)
+    //   })
   
-    }, []);
+    // }, []);
   
 
   // ===========================================================================

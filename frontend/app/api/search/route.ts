@@ -14,6 +14,7 @@ export async function GET() {
   //
   //   1. process.env.FASTAPI_URL 로 환경 변수를 읽어오세요.
   //      (서버에서 실행되므로 NEXT_PUBLIC_ 접두사 불필요)
+      //const fastapiUrl = process.env.FASTAPI_URL;
       const fastapiUrl = process.env.FASTAPI_URL;
   //   2. FASTAPI_URL 이 없다면 500 에러를 반환하세요.
       if (!fastapiUrl) {
@@ -21,7 +22,7 @@ export async function GET() {
       }
   //
   //   3. `${fastapiUrl}/posts` 를 fetch 하여 게시글 목록을 가져오세요.
-        fetch(`${fastapiUrl}/posts`)
+        return fetch(`${fastapiUrl}/posts`)
         .then((res) => {
           if (!res.ok) {
             throw new Error(`FastAPI 에러 발생 : ${res.status}`);

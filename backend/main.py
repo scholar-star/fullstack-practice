@@ -8,7 +8,24 @@ from datetime import datetime, timezone
 from typing import Optional
 import os
 
+app = FastAPI(title="Blog API")
+
+# 2. 환경 변수에서 프론트엔드 주소를 가져오고, 없으면 로컬 주소를 씁니다.
 FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:3000")
+
+# 안전하게 허용할 출처 리스트 생성
+origins = [
+    "http://localhost:3000",  # 로컬 테스트용은 상시 허용
+    FRONTEND_URL,             # 배포된 진짜 프론트엔드 주소 허용
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,    # 3. origins 리스트 주입
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # ─── DB 설정 ────────────────────────────────────────────
 DATABASE_URL = "sqlite:///./blog.db"
@@ -89,7 +106,7 @@ def get_db():
 
 # ─── GET /posts ──────────────────────────────────────────
 @app.get("/posts", response_model=list[PostResponse])
-def get_posts(db: Session = Depends(get_db)):
+def get_posts(db: Session = Depends(get_db), q: Optional[str] = None):
     # [실습 3] TODO: 옵셔널 쿼리 파라미터 q 를 추가하고, 서버사이드 필터링을 구현해보세요.
     #
     #   1. 함수 인자에 q: Optional[str] = None 을 추가하세요.
@@ -99,9 +116,14 @@ def get_posts(db: Session = Depends(get_db)):
     #      검색어가 포함된 게시글만 반환하세요.
     #      → or_() 는 이미 임포트되어 있습니다
     #      → Post.title.contains(q), Post.content.contains(q)
-    #
+    if q:
+        return db.execute(
+            select(Post)
+            .where(or_(Post.title.contains(q), Post.content.contains(q)))
+        )
     #   3. q 가 없을 때는 전체 목록을 반환하세요.
-    return db.execute(select(Post)).scalars().all()
+    else:
+        return db.execute(select(Post)).scalars().all()
 
 
 # ─── GET /posts/{post_id} ────────────────────────────────
