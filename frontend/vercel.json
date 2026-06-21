@@ -1,0 +1,8 @@
+{
+    "git":{
+        "deploymentEnabled": {
+            "main":false,
+            "week-03-정유진":true
+        }
+    }
+}
