@@ -29,10 +29,14 @@ export default function TodosPage() {
     const day = String(todoDate.getDate()).padStart(2, '0');
     const formattedDate = `${year}-${month}-${day}`;
 
-    const todosPromise = GET(`/api/todos?date=${formattedDate}&filter=${filter}&search=${searchTerm}`)
-    .then((res) => {
-        return res
-    });
+    let todosPromise;
+
+    if (typeof window !== 'undefined') {
+        todosPromise = GET(`/api/todos?date=${formattedDate}&filter=${filter}&search=${searchTerm}`)
+        .then((result) => result)
+    } else {
+        todosPromise = Promise.resolve([]); // 서버 사이드 렌더링 시 빈 배열 반환
+    }
 
     const handleAddTodo = () => {
         setRefreshKey(prevKey => prevKey + 1); // 새로고침 키 증가 -> TodoListClient 재렌더링
