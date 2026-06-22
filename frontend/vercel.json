@@ -4,11 +4,5 @@
             "main":false,
             "week-03-정유진":true
         }
-    },
-    "experimentalServices":{
-        "main": {
-            "image":"node:18",
-            "command":"npm run start"
-        }
     }
 }
