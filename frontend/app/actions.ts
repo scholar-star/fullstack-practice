@@ -2,6 +2,7 @@ import { NextRequest} from "next/server";
 
 export async function GET(path: string) {
     const url = new URL(path, process.env.NEXT_PUBLIC_BASE_URL); // Base URL을 지정
+    console.log('GET 요청 URL:', url.href); // 전체 URL 로그 출력
     const searchParams = url.searchParams;
 
     const date = searchParams.get('date');
