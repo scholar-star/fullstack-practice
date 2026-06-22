@@ -44,7 +44,6 @@ export default function TodoDate({ onDateChange, selectedDate }: TodoDateProps) 
                 <div className="flex items-center justify-center border border-sky-400 bg-white rounded-lg p-2 mx-4">
                     {week.map((day, index) => {
                         const date = format(day.date, 'yyyy-MM-dd');
-                        console.log(date, selectedDate);
                         const isSelected = date === format(selectedDate, 'yyyy-MM-dd');
                         return (
                             <div key={index}

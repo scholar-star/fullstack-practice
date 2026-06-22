@@ -18,10 +18,10 @@ interface Todo {
 }
 
 export default function TodosPage() {
-    const [todos, setTodos] = useState<Todo[]>([]);
     const [todoDate, setTodoDate] = useState<Date>(new Date()); // 선택된 날짜 상태
     const [filter, setFilter] = useState<string>('all'); // 필터 상태
     const [searchTerm, setSearchTerm] = useState<string>(''); // 검색어 상태
+    const [refreshKey, setRefreshKey] = useState<number>(0); // 새로고침 키 상태
 
 
     const year = todoDate.getFullYear();
@@ -34,8 +34,8 @@ export default function TodosPage() {
         return res
     });
 
-    const handleAddTodo = (newTodo: Todo) => {
-        setTodos([...todos, newTodo]); // 갱신
+    const handleAddTodo = () => {
+        setRefreshKey(prevKey => prevKey + 1); // 새로고침 키 증가 -> TodoListClient 재렌더링
     }
 
     const handleDateChange = (date: string) => {
@@ -58,7 +58,7 @@ export default function TodosPage() {
             <TodoSearch onSearch={handleSearch} />
             <TodoFilter onFilter={handleFilter} />
             <ErrorBoundary errorComponent={TodoError}>
-                <Suspense key={`${formattedDate}-${filter}-${searchTerm}`} fallback={<Loading />}>
+                <Suspense key={`${formattedDate}-${filter}-${searchTerm}-${refreshKey}`} fallback={<Loading />}>
                     <TodoContainer todoPromise={todosPromise} />
                 </Suspense>
             </ErrorBoundary>
